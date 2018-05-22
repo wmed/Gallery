@@ -221,9 +221,17 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let item = items[(indexPath as NSIndexPath).item]
 
+    
+    
     if cart.images.contains(item) {
       cart.remove(item)
     } else {
+    
+        for image in cart.images{
+            cart.remove(image)
+        }
+        
+        
       if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > cart.images.count{
         cart.add(item)
       }
@@ -245,7 +253,7 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
 
     if let index = cart.images.index(of: item) {
       cell.frameView.g_quickFade()
-      cell.frameView.label.text = "\(index + 1)"
+      //cell.frameView.label.text = "\(index + 1)"
     } else {
       cell.frameView.alpha = 0
     }
