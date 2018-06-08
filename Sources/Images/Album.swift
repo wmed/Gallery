@@ -15,10 +15,11 @@ class Album {
   func reload() {
     items = []
 
-    let itemsFetchResult = PHAsset.fetchAssets(in: collection, options: Utils.fetchOptions())
+    let itemsFetchResult = PHAsset.fetchAssets(in: collection, options: nil)
     itemsFetchResult.enumerateObjects({ (asset, count, stop) in
       if asset.mediaType == .image {
-        self.items.append(Image(asset: asset))
+        self.items.insert(Image(asset: asset), at: 0)
+        //self.items.append(Image(asset: asset))
       }
     })
   }

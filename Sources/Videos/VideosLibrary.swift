@@ -24,11 +24,14 @@ class VideosLibrary {
   }
 
   fileprivate func reloadSync() {
-    fetchResults = PHAsset.fetchAssets(with: .video, options: Utils.fetchOptions())
+    fetchResults = PHAsset.fetchAssets(with: .video, options: nil)
 
     items = []
+
     fetchResults?.enumerateObjects({ (asset, _, _) in
-      self.items.append(Video(asset: asset))
+        
+    self.items.insert(Video(asset: asset), at: 0)
+      //self.items.append(Video(asset: asset))
     })
   }
 }
