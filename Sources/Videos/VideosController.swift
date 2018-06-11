@@ -6,7 +6,7 @@ class VideosController: UIViewController {
 
   lazy var gridView: GridView = self.makeGridView()
   lazy var videoBox: VideoBox = self.makeVideoBox()
-  lazy var infoLabel: UILabel = self.makeInfoLabel()
+  //lazy var infoLabel: UILabel = self.makeInfoLabel()
 
   var items: [Video] = []
   let library = VideosLibrary()
@@ -39,7 +39,7 @@ class VideosController: UIViewController {
 
     view.addSubview(gridView)
 
-    [videoBox, infoLabel].forEach {
+    [videoBox].forEach {
       gridView.bottomView.addSubview($0)
     }
 
@@ -49,9 +49,9 @@ class VideosController: UIViewController {
     videoBox.g_pin(on: .centerY)
     videoBox.g_pin(on: .left, constant: 38)
 
-    infoLabel.g_pin(on: .centerY)
-    infoLabel.g_pin(on: .left, view: videoBox, on: .right, constant: 11)
-    infoLabel.g_pin(on: .right, constant: -50)
+//    infoLabel.g_pin(on: .centerY)
+//    infoLabel.g_pin(on: .left, view: videoBox, on: .right, constant: 11)
+//    infoLabel.g_pin(on: .right, constant: -50)
 
     gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
     gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
@@ -88,9 +88,9 @@ class VideosController: UIViewController {
     gridView.bottomView.g_fade(visible: hasVideo)
     gridView.collectionView.g_updateBottomInset(hasVideo ? gridView.bottomView.frame.size.height : 0)
 
-    cart.video?.fetchDuration { [weak self] duration in
-      self?.infoLabel.isHidden = duration <= Config.VideoEditor.maximumDuration
-    }
+//    cart.video?.fetchDuration { [weak self] duration in
+//      self?.infoLabel.isHidden = duration <= Config.VideoEditor.maximumDuration
+//    }
   }
 
   // MARK: - Controls
