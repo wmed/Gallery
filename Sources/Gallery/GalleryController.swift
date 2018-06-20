@@ -47,6 +47,19 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
     
     // MARK: - Child view controller
     
+    public func reloadLibraries(){
+        for childVC in childViewControllers{
+            if let pagesVC = childVC as? PagesController {
+                for page in pagesVC.childViewControllers{
+                    if let vc = page as? PageAware{
+                        vc.reloadContent()
+                    }
+                }
+            }
+            
+        }
+    }
+    
     func makeImagesController() -> ImagesController {
         let controller = ImagesController(cart: cart)
         controller.title = "Gallery.Images.Title".g_localize(fallback: "PHOTOS")
@@ -74,7 +87,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
         }
         
         let useCamera = Permission.Camera.needsPermission && Permission.Camera.status == .authorized
-        
+
         let tabsToShow = Config.tabsToShow.flatMap { $0 != .cameraTab ? $0 : (useCamera ? $0 : nil) }
         
         let controllers: [UIViewController] = tabsToShow.flatMap { tab in

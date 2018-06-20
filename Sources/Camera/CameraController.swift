@@ -184,6 +184,10 @@ extension CameraController: CartDelegate {
 
 extension CameraController: PageAware {
 
+    func reloadContent() {
+        
+    }
+    
   func pageDidShow() {
     once.run {
       cameraMan.setup()

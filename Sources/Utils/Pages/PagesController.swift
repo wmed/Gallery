@@ -1,7 +1,8 @@
 import UIKit
 
 protocol PageAware: class {
-  func pageDidShow()
+    func pageDidShow()
+    func reloadContent()
 }
 
 class PagesController: UIViewController {
@@ -168,6 +169,12 @@ class PagesController: UIViewController {
       controller.pageDidShow()
     }
   }
+    
+    func refeshLibrary() {
+        if let controller = controllers[selectedIndex] as? PageAware {
+            controller.reloadContent()
+        }
+    }
 }
 
 extension PagesController: PageIndicatorDelegate {

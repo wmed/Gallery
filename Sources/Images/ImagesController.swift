@@ -139,6 +139,15 @@ class ImagesController: UIViewController {
 
 extension ImagesController: PageAware {
 
+    func reloadContent() {
+        library.reload {
+            DispatchQueue.main.async {
+                self.gridView.collectionView.reloadData()
+            }
+            
+        }
+    }
+    
   func pageDidShow() {
     once.run {
       library.reload {
