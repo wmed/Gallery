@@ -77,7 +77,11 @@ class PagesController: UIViewController {
   }
 
   func makePageIndicator() -> PageIndicator {
-    let items = controllers.flatMap { $0.title }
+
+    let items = controllers.flatMap { (vc) -> (name:String, selected:String, unselected:String) in
+        let title = vc.title ?? ""
+        return (name:title, selected:"\(title.lowercased())Selected", unselected:"\(title.lowercased())Unselected")
+    }
     let indicator = PageIndicator(items: items)
     indicator.delegate = self
 
@@ -93,7 +97,7 @@ class PagesController: UIViewController {
       Constraint.on(
         pageIndicator.leftAnchor.constraint(equalTo: pageIndicator.superview!.leftAnchor),
         pageIndicator.rightAnchor.constraint(equalTo: pageIndicator.superview!.rightAnchor),
-        pageIndicator.heightAnchor.constraint(equalToConstant: 40)
+        pageIndicator.heightAnchor.constraint(equalToConstant: 52)
       )
       
       if #available(iOS 11, *) {

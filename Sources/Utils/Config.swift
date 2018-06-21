@@ -61,7 +61,7 @@ public struct Config {
     }
 
     public struct ArrowButton {
-      public static var tintColor: UIColor = UIColor(red: 110/255, green: 117/255, blue: 131/255, alpha: 1)
+      public static var tintColor: UIColor = UIColor.white
     }
 
     public struct FrameView {

@@ -36,9 +36,14 @@ class VideosController: UIViewController {
     // MARK: - Setup
     
     func setup() {
-        view.backgroundColor = UIColor.white
+   
+        view.backgroundColor = UIColor(red: 20/255, green: 25/255, blue: 30/255, alpha: 1.0)
         
         view.addSubview(gridView)
+        
+        addChildViewController(dropdownController)
+        gridView.insertSubview(dropdownController.view, belowSubview: gridView.topView)
+        dropdownController.didMove(toParentViewController: self)
         
         [videoBox].forEach {
             gridView.bottomView.addSubview($0)
@@ -46,12 +51,23 @@ class VideosController: UIViewController {
         
         gridView.g_pinEdges()
         
+        dropdownController.view.g_pin(on: .left)
+        dropdownController.view.g_pin(on: .right)
+        dropdownController.view.g_pin(on: .height, constant: -40) // subtract gridView.topView height
+        
+        dropdownController.expandedTopConstraint = dropdownController.view.g_pin(on: .top, view: gridView.topView, on: .bottom, constant: 1)
+        dropdownController.expandedTopConstraint?.isActive = false
+        dropdownController.collapsedTopConstraint = dropdownController.view.g_pin(on: .top, on: .bottom)
+        
+        
         videoBox.g_pin(size: CGSize(width: 44, height: 44))
         videoBox.g_pin(on: .centerY)
         videoBox.g_pin(on: .left, constant: 38)
         
         gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
         gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
+        gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), for: .touchUpInside)
+
         
         gridView.collectionView.dataSource = self
         gridView.collectionView.delegate = self
@@ -70,6 +86,28 @@ class VideosController: UIViewController {
     @objc func doneButtonTouched(_ button: UIButton) {
         EventHub.shared.doneTouched?()
         EventHub.shared.doneWithVideos?()
+    }
+    
+    @objc func arrowButtonTouched(_ button: ArrowButton) {
+        dropdownController.toggle()
+        button.toggle(dropdownController.expanding)
+    }
+    
+    // MARK: - Logic
+    
+    func show(album: Album) {
+        gridView.arrowButton.updateText(album.collection.localizedTitle ?? "")
+        items = album.videoItems
+        gridView.collectionView.reloadData()
+        gridView.collectionView.g_scrollToTop()
+        gridView.emptyView.isHidden = !items.isEmpty
+    }
+    
+    func refreshSelectedAlbum() {
+        if let selectedAlbum = selectedAlbum {
+            selectedAlbum.reload()
+            show(album: selectedAlbum)
+        }
     }
     
     // MARK: - View
@@ -128,8 +166,8 @@ class VideosController: UIViewController {
 extension VideosController: DropdownControllerDelegate {
     
     func dropdownController(_ controller: DropdownController, didSelect album: Album) {
-        //selectedAlbum = album
-       //show(album: album)
+        selectedAlbum = album
+       show(album: album)
         
         dropdownController.toggle()
         gridView.arrowButton.toggle(controller.expanding)
@@ -154,8 +192,14 @@ extension VideosController: PageAware {
             library.reload {
                 self.gridView.loadingIndicator.stopAnimating()
                 self.items = self.library.items
-                self.gridView.collectionView.reloadData()
+                //self.gridView.collectionView.reloadData()
                 self.gridView.emptyView.isHidden = !self.items.isEmpty
+                self.dropdownController.tableView.reloadData()
+                
+                if let album = self.library.albums.first {
+                    self.selectedAlbum = album
+                    self.show(album: album)
+                }
             }
         }
     }

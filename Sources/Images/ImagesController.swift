@@ -36,7 +36,7 @@ class ImagesController: UIViewController {
   // MARK: - Setup
 
   func setup() {
-    view.backgroundColor = UIColor.white
+    view.backgroundColor = UIColor(red: 20/255, green: 25/255, blue: 35/255, alpha: 1.0)
 
     view.addSubview(gridView)
 
@@ -93,7 +93,7 @@ class ImagesController: UIViewController {
 
   func show(album: Album) {
     gridView.arrowButton.updateText(album.collection.localizedTitle ?? "")
-    items = album.items
+    items = album.photoItems
     gridView.collectionView.reloadData()
     gridView.collectionView.g_scrollToTop()
     gridView.emptyView.isHidden = !items.isEmpty

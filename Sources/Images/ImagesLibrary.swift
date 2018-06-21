@@ -37,7 +37,7 @@ class ImagesLibrary {
         let album = Album(collection: collection)
         album.reload()
 
-        if !album.items.isEmpty {
+        if !album.photoItems.isEmpty {
           self.albums.append(album)
         }
       })

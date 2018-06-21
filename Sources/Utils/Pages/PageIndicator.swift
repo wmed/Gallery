@@ -6,14 +6,15 @@ protocol PageIndicatorDelegate: class {
 
 class PageIndicator: UIView {
 
-  let items: [String]
+  let items: [(name: String, selected: String, unselected: String)]
   var buttons: [UIButton]!
-  lazy var indicator: UIImageView = self.makeIndicator()
+
+  //lazy var indicator: UIImageView = self.makeIndicator()
   weak var delegate: PageIndicatorDelegate?
 
   // MARK: - Initialization
 
-  required init(items: [String]) {
+    required init(items: [(name: String, selected: String, unselected: String)]) {
     self.items = items
 
     super.init(frame: .zero)
@@ -40,12 +41,12 @@ class PageIndicator: UIView {
                             height: bounds.size.height)
     }
 
-    indicator.frame.size = CGSize(width: width / 1.5, height: 4)
-    indicator.frame.origin.y = bounds.size.height - indicator.frame.size.height
-
-    if indicator.frame.origin.x == 0 {
-      select(index: 0)
-    }
+//    indicator.frame.size = CGSize(width: width / 1.5, height: 4)
+//    indicator.frame.origin.y = bounds.size.height - indicator.frame.size.height
+//
+//    if indicator.frame.origin.x == 0 {
+//      select(index: 0)
+//    }
   }
 
   override func didMoveToSuperview() {
@@ -62,19 +63,21 @@ class PageIndicator: UIView {
       return button
     }
 
-    addSubview(indicator)
+    //addSubview(indicator)
   }
 
   // MARK: - Controls
 
-  func makeButton(_ title: String) -> UIButton {
+    func makeButton(_ title: (name:String, selected:String, unselected:String)) -> UIButton {
     let button = UIButton(type: .custom)
-    button.setTitle(title, for: UIControlState())
-    button.setTitleColor(Config.PageIndicator.textColor, for: UIControlState())
-    button.setTitleColor(UIColor.gray, for: .highlighted)
+    //button.setTitle("", for: UIControlState())
+        button.setImage(UIImage(named: title.unselected), for: .normal)
+        button.setImage(UIImage(named: title.selected), for: .selected)
+    //button.setTitleColor(Config.PageIndicator.textColor, for: UIControlState())
+    //button.setTitleColor(UIColor.gray, for: .highlighted)
     button.backgroundColor = Config.PageIndicator.backgroundColor
     button.addTarget(self, action: #selector(buttonTouched(_:)), for: .touchUpInside)
-    button.titleLabel?.font = buttonFont(false)
+    //button.titleLabel?.font = buttonFont(false)
 
     return button
   }
@@ -97,18 +100,21 @@ class PageIndicator: UIView {
 
   func select(index: Int, animated: Bool = true) {
     for (i, b) in buttons.enumerated() {
-      b.titleLabel?.font = buttonFont(i == index)
+        
+        let info = items[i]
+        b.setImage(UIImage(named: i == index ? info.selected : info.unselected), for: .normal)
+      //b.titleLabel?.font = buttonFont(i == index)
     }
 
-    UIView.animate(withDuration: animated ? 0.25 : 0.0,
-                   delay: 0,
-                   usingSpringWithDamping: 0.7,
-                   initialSpringVelocity: 0.5,
-                   options: .beginFromCurrentState,
-                   animations: {
-                     self.indicator.center.x = self.buttons[index].center.x
-                   },
-                   completion: nil)
+//    UIView.animate(withDuration: animated ? 0.25 : 0.0,
+//                   delay: 0,
+//                   usingSpringWithDamping: 0.7,
+//                   initialSpringVelocity: 0.5,
+//                   options: .beginFromCurrentState,
+//                   animations: {
+//                     self.indicator.center.x = self.buttons[index].center.x
+//                   },
+//                   completion: nil)
   }
 
   // MARK: - Helper
