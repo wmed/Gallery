@@ -12,6 +12,7 @@ class GridView: UIView {
   lazy var collectionView: UICollectionView = self.makeCollectionView()
   lazy var closeButton: UIButton = self.makeCloseButton()
   lazy var doneButton: UIButton = self.makeDoneButton()
+    lazy var cancelButton = makeCancelButton()
   lazy var emptyView: UIView = self.makeEmptyView()
   lazy var loadingIndicator: UIActivityIndicatorView = self.makeLoadingIndicator()
 
@@ -39,7 +40,7 @@ class GridView: UIView {
       topView.addSubview($0)
     }
 
-    [bottomBlurView, doneButton].forEach {
+    [bottomBlurView, doneButton, cancelButton].forEach {
       bottomView.addSubview($0 as! UIView)
     }
 
@@ -62,8 +63,10 @@ class GridView: UIView {
       )
     }
 
-    bottomView.g_pinDownward()
+    bottomView.g_pin(on: .top, view: topView, on: .bottom, constant:0)
     bottomView.g_pin(height: 80)
+    bottomView.g_pin(on:.leading, view: topView, on: .leading, constant:0)
+    bottomView.g_pin(on:.trailing, view: topView, on: .trailing, constant:0)
 
     emptyView.g_pinEdges(view: collectionView)
     
@@ -80,7 +83,12 @@ class GridView: UIView {
     arrowButton.g_pin(height: 40)
 
     doneButton.g_pin(on: .centerY)
-    doneButton.g_pin(on: .right, constant: -38)
+    doneButton.g_pin(width: 90)
+    doneButton.g_pin(on: .right, constant: -1)
+    
+    cancelButton.g_pin(on: .centerY)
+    cancelButton.g_pin(width: 90)
+    cancelButton.g_pin(on:.trailing, view: doneButton, on: .leading, constant:-15)
   }
 
   // MARK: - Controls
@@ -127,14 +135,21 @@ class GridView: UIView {
 
   private func makeDoneButton() -> UIButton {
     let button = UIButton(type: .system)
-    button.setTitleColor(UIColor.white, for: UIControlState())
+    button.setTitleColor(UIColor(red: 1.0, green: 110/225, blue: 64/255, alpha: 1.0), for: UIControlState())
     button.setTitleColor(UIColor.lightGray, for: .disabled)
-    button.titleLabel?.font = Config.Font.Text.regular.withSize(16)
-    button.setTitle("Gallery.Done".g_localize(fallback: "Done"), for: UIControlState())
-    
+    button.titleLabel?.font = Config.Font.Text.regular.withSize(14)
+    button.setTitle("Gallery.Done".g_localize(fallback: "Next"), for: UIControlState())
     return button
   }
 
+    private func makeCancelButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitleColor(UIColor.lightGray, for: UIControlState())
+        button.titleLabel?.font = Config.Font.Text.regular.withSize(14)
+        button.setTitle("Gallery.Done".g_localize(fallback: "Cancel"), for: UIControlState())
+        return button
+    }
+    
   private func makeCollectionView() -> UICollectionView {
     let layout = UICollectionViewFlowLayout()
     layout.minimumInteritemSpacing = 2

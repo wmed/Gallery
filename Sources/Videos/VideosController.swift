@@ -36,7 +36,7 @@ class VideosController: UIViewController {
     // MARK: - Setup
     
     func setup() {
-   
+        
         view.backgroundColor = UIColor(red: 20/255, green: 25/255, blue: 30/255, alpha: 1.0)
         
         view.addSubview(gridView)
@@ -60,21 +60,22 @@ class VideosController: UIViewController {
         dropdownController.collapsedTopConstraint = dropdownController.view.g_pin(on: .top, on: .bottom)
         
         
-        videoBox.g_pin(size: CGSize(width: 44, height: 44))
+        videoBox.g_pin(size: CGSize(width: 56, height: 56))
         videoBox.g_pin(on: .centerY)
-        videoBox.g_pin(on: .left, constant: 38)
+        videoBox.g_pin(on: .left, constant: 28)
         
         gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
         gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
         gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), for: .touchUpInside)
-
+        gridView.cancelButton.addTarget(self, action: #selector(cancelButtonTouched(_:)), for: .touchUpInside)
+        
         
         gridView.collectionView.dataSource = self
         gridView.collectionView.delegate = self
         gridView.collectionView.register(VideoCell.self, forCellWithReuseIdentifier: String(describing: VideoCell.self))
         
-//        gridView.arrowButton.updateText("Gallery.AllVideos".g_localize(fallback: "ALL VIDEOS"))
-//        gridView.arrowButton.arrow.isHidden = false
+        //        gridView.arrowButton.updateText("Gallery.AllVideos".g_localize(fallback: "ALL VIDEOS"))
+        //        gridView.arrowButton.arrow.isHidden = false
     }
     
     // MARK: - Action
@@ -86,6 +87,13 @@ class VideosController: UIViewController {
     @objc func doneButtonTouched(_ button: UIButton) {
         EventHub.shared.doneTouched?()
         EventHub.shared.doneWithVideos?()
+    }
+    
+    @objc func cancelButtonTouched(_ button: UIButton) {
+        cart.video = nil
+        
+        refreshView()
+        configureFrameViews()
     }
     
     @objc func arrowButtonTouched(_ button: ArrowButton) {
@@ -150,15 +158,15 @@ class VideosController: UIViewController {
     }
     
     
-//    func makeInfoLabel() -> UILabel {
-//        let label = UILabel()
-//        label.textColor = UIColor.white
-//        label.font = Config.Font.Text.regular.withSize(12)
-//        label.text = String(format: "Gallery.Videos.MaxiumDuration".g_localize(fallback: "FIRST %d SECONDS"),
-//                            (Int(Config.VideoEditor.maximumDuration)))
-//
-//        return label
-//    }
+    //    func makeInfoLabel() -> UILabel {
+    //        let label = UILabel()
+    //        label.textColor = UIColor.white
+    //        label.font = Config.Font.Text.regular.withSize(12)
+    //        label.text = String(format: "Gallery.Videos.MaxiumDuration".g_localize(fallback: "FIRST %d SECONDS"),
+    //                            (Int(Config.VideoEditor.maximumDuration)))
+    //
+    //        return label
+    //    }
     
     
     
@@ -169,7 +177,7 @@ extension VideosController: PageAware {
     
     func reloadContent() {
         refreshSelectedAlbum()
-
+        
     }
     func pageDidShow() {
         once.run {

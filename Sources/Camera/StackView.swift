@@ -38,8 +38,8 @@ class StackView: UIControl{
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    let step: CGFloat = 3.0
-    let scale: CGFloat = 0.8
+    let step: CGFloat = 1.0
+    let scale: CGFloat = 1
     let imageViewSize = CGSize(width: frame.width * scale,
                           height: frame.height * scale)
 
