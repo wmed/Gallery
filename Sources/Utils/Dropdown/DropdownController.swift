@@ -10,6 +10,8 @@ class DropdownController: UIViewController {
   lazy var tableView: UITableView = self.makeTableView()
   lazy var blurView: UIVisualEffectView = self.makeBlurView()
 
+    var mediaType: PHAssetMediaType?
+    
   var animating: Bool = false
   var expanding: Bool = false
   var selectedIndex: Int = 0
@@ -105,7 +107,7 @@ extension DropdownController: UITableViewDataSource, UITableViewDelegate {
       as! AlbumCell
 
     let album = albums[(indexPath as NSIndexPath).row]
-    cell.configure(album)
+    cell.configure(album, type: mediaType)
     cell.backgroundColor = UIColor.clear
 
     return cell

@@ -1,4 +1,5 @@
 import UIKit
+import Photos
 
 class AlbumCell: UITableViewCell {
 
@@ -20,14 +21,24 @@ class AlbumCell: UITableViewCell {
 
   // MARK: - Config
 
-  func configure(_ album: Album) {
+    func configure(_ album: Album, type:PHAssetMediaType?) {
     albumTitleLabel.text = album.collection.localizedTitle
-    itemCountLabel.text = "\(album.photoItems.count)"
+        if let mediaType = type, mediaType == .video{
+            itemCountLabel.text = "\(album.videoItems.count)"
+            if let item = album.videoItems.first {
+                albumImageView.layoutIfNeeded()
+                albumImageView.g_loadImage(item.asset)
+            }
+        }else{
+            itemCountLabel.text = "\(album.photoItems.count)"
+            if let item = album.photoItems.first {
+                albumImageView.layoutIfNeeded()
+                albumImageView.g_loadImage(item.asset)
+            }
+        }
+        
 
-    if let item = album.photoItems.first {
-      albumImageView.layoutIfNeeded()
-      albumImageView.g_loadImage(item.asset)
-    }
+    
   }
 
   // MARK: - Setup

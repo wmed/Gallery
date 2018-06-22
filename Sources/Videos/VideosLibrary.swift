@@ -3,6 +3,7 @@ import Photos
 
 class VideosLibrary {
 
+    var isSyncing = false
   var items: [Video] = []
   var fetchResults: PHFetchResult<PHAsset>?
 
@@ -11,6 +12,7 @@ class VideosLibrary {
     
   // MARK: - Initialization
 
+    
   init() {
 
   }
@@ -27,6 +29,12 @@ class VideosLibrary {
   }
     
     fileprivate func reloadSync() {
+        if isSyncing == true{
+            return
+        }
+        
+        isSyncing = true
+        
         let types: [PHAssetCollectionType] = [.smartAlbum, .album]
         
         albumsFetchResults = types.map {
@@ -36,6 +44,7 @@ class VideosLibrary {
         albums = []
         
         for result in albumsFetchResults {
+            
             result.enumerateObjects({ (collection, _, _) in
                 let album = Album(collection: collection)
                 album.reload()
@@ -46,10 +55,10 @@ class VideosLibrary {
             })
         }
         
-        // Move Camera Roll first
         if let index = albums.index(where: { $0.collection.assetCollectionSubtype == . smartAlbumUserLibrary }) {
             albums.g_moveToFirst(index)
         }
+        isSyncing = false
     }
 
 //  fileprivate func reloadSync() {

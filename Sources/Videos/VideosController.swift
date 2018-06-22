@@ -73,8 +73,8 @@ class VideosController: UIViewController {
         gridView.collectionView.delegate = self
         gridView.collectionView.register(VideoCell.self, forCellWithReuseIdentifier: String(describing: VideoCell.self))
         
-        gridView.arrowButton.updateText("Gallery.AllVideos".g_localize(fallback: "ALL VIDEOS"))
-        gridView.arrowButton.arrow.isHidden = false
+//        gridView.arrowButton.updateText("Gallery.AllVideos".g_localize(fallback: "ALL VIDEOS"))
+//        gridView.arrowButton.arrow.isHidden = false
     }
     
     // MARK: - Action
@@ -130,7 +130,7 @@ class VideosController: UIViewController {
     func makeDropdownController() -> DropdownController {
         let controller = DropdownController()
         controller.delegate = self
-        
+        controller.mediaType = .video
         return controller
     }
     
@@ -149,17 +149,47 @@ class VideosController: UIViewController {
         return videoBox
     }
     
-    func makeInfoLabel() -> UILabel {
-        let label = UILabel()
-        label.textColor = UIColor.white
-        label.font = Config.Font.Text.regular.withSize(12)
-        label.text = String(format: "Gallery.Videos.MaxiumDuration".g_localize(fallback: "FIRST %d SECONDS"),
-                            (Int(Config.VideoEditor.maximumDuration)))
-        
-        return label
+    
+//    func makeInfoLabel() -> UILabel {
+//        let label = UILabel()
+//        label.textColor = UIColor.white
+//        label.font = Config.Font.Text.regular.withSize(12)
+//        label.text = String(format: "Gallery.Videos.MaxiumDuration".g_localize(fallback: "FIRST %d SECONDS"),
+//                            (Int(Config.VideoEditor.maximumDuration)))
+//
+//        return label
+//    }
+    
+    
+    
+}
+
+
+extension VideosController: PageAware {
+    
+    func reloadContent() {
+        refreshSelectedAlbum()
+
     }
-    
-    
+    func pageDidShow() {
+        once.run {
+            library.reload {
+                self.gridView.loadingIndicator.stopAnimating()
+                //self.items = self.library.items
+                self.gridView.emptyView.isHidden = true
+                
+                self.dropdownController.albums = self.library.albums
+                self.dropdownController.tableView.reloadData()
+                
+                if let album = self.library.albums.first {
+                    self.selectedAlbum = album
+                    self.show(album: album)
+                }else{
+                    self.gridView.emptyView.isHidden = false
+                }
+            }
+        }
+    }
     
 }
 
@@ -167,41 +197,10 @@ extension VideosController: DropdownControllerDelegate {
     
     func dropdownController(_ controller: DropdownController, didSelect album: Album) {
         selectedAlbum = album
-       show(album: album)
+        show(album: album)
         
         dropdownController.toggle()
         gridView.arrowButton.toggle(controller.expanding)
-    }
-}
-
-
-extension VideosController: PageAware {
-    
-    func reloadContent() {
-        library.reload {
-            DispatchQueue.main.async {
-                self.items = self.library.items
-                self.gridView.collectionView.reloadData()
-            }
-            
-        }
-    }
-    
-    func pageDidShow() {
-        once.run {
-            library.reload {
-                self.gridView.loadingIndicator.stopAnimating()
-                self.items = self.library.items
-                //self.gridView.collectionView.reloadData()
-                self.gridView.emptyView.isHidden = !self.items.isEmpty
-                self.dropdownController.tableView.reloadData()
-                
-                if let album = self.library.albums.first {
-                    self.selectedAlbum = album
-                    self.show(album: album)
-                }
-            }
-        }
     }
 }
 

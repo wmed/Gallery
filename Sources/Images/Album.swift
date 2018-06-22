@@ -1,11 +1,15 @@
 import UIKit
 import Photos
 
+
+
 class Album {
     
     let collection: PHAssetCollection
     var photoItems: [Image] = []
     var videoItems: [Video] = []
+    
+    var albumType: PHAssetMediaType?
     
     
     // MARK: - Initialization

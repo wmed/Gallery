@@ -119,6 +119,7 @@ class ImagesController: UIViewController {
   func makeDropdownController() -> DropdownController {
     let controller = DropdownController()
     controller.delegate = self
+    controller.mediaType = .image
     
     return controller
   }
@@ -140,12 +141,8 @@ class ImagesController: UIViewController {
 extension ImagesController: PageAware {
 
     func reloadContent() {
-        library.reload {
-            DispatchQueue.main.async {
-                self.gridView.collectionView.reloadData()
-            }
-            
-        }
+        refreshSelectedAlbum()
+        
     }
     
   func pageDidShow() {
