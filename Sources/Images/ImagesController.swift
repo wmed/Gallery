@@ -91,7 +91,10 @@ class ImagesController: UIViewController {
     }
     
     @objc func cancelButtonTouched(_ button: UIButton) {
-        cart.video = nil
+        
+        for image in cart.images{
+            cart.remove(image)
+        }
         
         refreshView()
         configureFrameViews()
