@@ -129,8 +129,9 @@ class VideosController: UIViewController {
         
         let hasVideo = (cart.video != nil)
         gridView.bottomView.g_fade(visible: hasVideo)
-        gridView.collectionView.g_updateBottomInset(hasVideo ? gridView.bottomView.frame.size.height : 0)
-        
+        UIView.animate(withDuration: 0.3) {
+        self.gridView.collectionView.g_updateBottomInset(hasVideo ? self.gridView.bottomView.frame.size.height : 0)
+        }
     }
     
     // MARK: - Controls
