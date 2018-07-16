@@ -55,7 +55,7 @@ class ImageCell: UICollectionViewCell {
   private func makeImageView() -> UIImageView {
     let imageView = UIImageView()
     imageView.clipsToBounds = true
-    imageView.contentMode = .scaleAspectFill
+    imageView.contentMode = Config.Grid.ThumbImage.cellContentMode
 
     return imageView
   }

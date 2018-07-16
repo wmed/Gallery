@@ -59,7 +59,6 @@ class VideosController: UIViewController {
         dropdownController.expandedTopConstraint?.isActive = false
         dropdownController.collapsedTopConstraint = dropdownController.view.g_pin(on: .top, on: .bottom)
         
-        
         videoBox.g_pin(size: CGSize(width: 56, height: 56))
         videoBox.g_pin(on: .centerY)
         videoBox.g_pin(on: .left, constant: 28)
@@ -69,13 +68,10 @@ class VideosController: UIViewController {
         gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), for: .touchUpInside)
         gridView.cancelButton.addTarget(self, action: #selector(cancelButtonTouched(_:)), for: .touchUpInside)
         
-        
         gridView.collectionView.dataSource = self
         gridView.collectionView.delegate = self
         gridView.collectionView.register(VideoCell.self, forCellWithReuseIdentifier: String(describing: VideoCell.self))
-        
-        //        gridView.arrowButton.updateText("Gallery.AllVideos".g_localize(fallback: "ALL VIDEOS"))
-        //        gridView.arrowButton.arrow.isHidden = false
+
     }
     
     // MARK: - Action
@@ -85,7 +81,7 @@ class VideosController: UIViewController {
     }
     
     @objc func doneButtonTouched(_ button: UIButton) {
-        EventHub.shared.doneTouched?()
+        //EventHub.shared.doneTouched?()
         EventHub.shared.doneWithVideos?()
     }
     
@@ -233,7 +229,7 @@ extension VideosController: VideoBoxDelegate {
 }
 
 extension VideosController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

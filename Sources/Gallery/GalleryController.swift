@@ -7,8 +7,9 @@ public protocol GalleryControllerDelegate: class {
     func galleryController(_ controller: GalleryController, didSelectVideo video: Video)
     func galleryController(_ controller: GalleryController, requestLightbox images: [Image])
     func galleryControllerDidCancel(_ controller: GalleryController)
-    func galleryControllerDoneTouched()
+    
 }
+
 
 public class GalleryController: UIViewController, PermissionControllerDelegate {
     
@@ -146,11 +147,11 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
             }
         }
         
-        EventHub.shared.doneTouched = { [weak self] in
-            if let strongSelf = self {
-                strongSelf.delegate?.galleryControllerDoneTouched()
-            }
-        }
+//        EventHub.shared.doneTouched = { [weak self] in
+//            if let strongSelf = self {
+//                strongSelf.delegate?.galleryControllerDoneTouched()
+//            }
+//        }
     }
     
     // MARK: - PermissionControllerDelegate

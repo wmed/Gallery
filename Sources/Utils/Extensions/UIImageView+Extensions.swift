@@ -21,7 +21,7 @@ extension UIImageView {
     let id = PHImageManager.default().requestImage(
       for: asset,
       targetSize: frame.size,
-      contentMode: .aspectFill,
+      contentMode: Config.Grid.ThumbImage.photoContentMode,
       options: options) { [weak self] image, _ in
       self?.image = image
     }

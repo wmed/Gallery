@@ -1,5 +1,6 @@
 import UIKit
 import AVFoundation
+import Photos
 
 public struct Config {
 
@@ -73,6 +74,12 @@ public struct Config {
       static let columnCount: CGFloat = 3
       static let cellSpacing: CGFloat = 2
     }
+    
+    public struct ThumbImage {
+        public static var cellContentMode:UIViewContentMode = .scaleAspectFill
+        public static var photoContentMode:PHImageContentMode = .aspectFill
+    }
+    
   }
 
   public struct EmptyView {

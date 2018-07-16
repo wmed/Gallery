@@ -132,7 +132,7 @@ class CameraController: UIViewController {
   }
 
   @objc func doneButtonTouched(_ button: UIButton) {
-    EventHub.shared.doneTouched?()
+    //EventHub.shared.doneTouched?()
     EventHub.shared.doneWithImages?()
   }
     
