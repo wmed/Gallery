@@ -144,7 +144,7 @@ class StackView: UIControl{
     return Array(0..<Config.Camera.StackView.imageCount).map { _ in
       let imageView = UIImageView()
 
-      imageView.contentMode = .scaleAspectFill
+      imageView.contentMode = Config.Grid.ThumbImage.cellContentMode //.scaleAspectFill
       imageView.alpha = 0
       imageView.g_addRoundBorder()
 

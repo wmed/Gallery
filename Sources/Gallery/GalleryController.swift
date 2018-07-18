@@ -42,6 +42,11 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
         }
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setup()
+    }
+    
     public override var prefersStatusBarHidden : Bool {
         return true
     }
