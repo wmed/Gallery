@@ -137,7 +137,7 @@ class CameraController: UIViewController {
   }
     
   fileprivate func isBelowImageLimit() -> Bool {
-    return (Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > cart.images.count)
+    return (Config.Grid.imageLimit == 0 || Config.Grid.imageLimit > cart.images.count)
     }
     
   // MARK: - View
@@ -165,6 +165,14 @@ class CameraController: UIViewController {
 }
 
 extension CameraController: CartDelegate {
+    func cart(_ cart: Cart, didAdd video: Video) {
+        
+    }
+    
+    func cart(_ cart: Cart, didRemove video: Video) {
+        
+    }
+    
 
   func cart(_ cart: Cart, didAdd image: Image, newlyTaken: Bool) {
     cameraView.stackView.reload(cart.images, added: true)

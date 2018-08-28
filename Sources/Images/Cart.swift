@@ -4,6 +4,9 @@ import Photos
 public protocol CartDelegate: class {
     func cart(_ cart: Cart, didAdd image: Image, newlyTaken: Bool)
     func cart(_ cart: Cart, didRemove image: Image)
+    func cart(_ cart: Cart, didAdd video: Video)
+    func cart(_ cart: Cart, didRemove video: Video)
+    
     func cartDidReload(_ cart: Cart)
 }
 
@@ -11,7 +14,7 @@ public protocol CartDelegate: class {
 public class Cart {
     
     public var images: [Image] = []
-    public var video: Video?
+    public var videos: [Video] = []
     
     
     var delegates: NSHashTable<AnyObject> = NSHashTable.weakObjects()
@@ -50,6 +53,35 @@ public class Cart {
         }
     }
     
+    public func add(_ video: Video) {
+        guard !videos.contains(video) else { return }
+        
+        videos.append(video)
+        
+        for case let delegate as CartDelegate in delegates.allObjects {
+            delegate.cart(self, didAdd: video)
+        }
+    }
+    
+    public func remove(_ video: Video) {
+        guard let index = videos.index(of: video) else { return }
+        
+        videos.remove(at: index)
+        
+        for case let delegate as CartDelegate in delegates.allObjects {
+            delegate.cart(self, didRemove: video)
+        }
+    }
+    
+    
+    public func reload(_ videos:[Video]) {
+        self.videos = videos
+        for case let delegate as CartDelegate in delegates.allObjects {
+            delegate.cartDidReload(self)
+        }
+    }
+    
+    
     public func reload(_ images: [Image]) {
         self.images = images
         
@@ -61,7 +93,7 @@ public class Cart {
     // MARK: - Reset
     
     public func reset() {
-        video = nil
+        videos.removeAll()
         images.removeAll()
         delegates.removeAllObjects()
     }

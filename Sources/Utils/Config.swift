@@ -51,7 +51,7 @@ public struct Config {
       public static let imageCount: Int = 4
     }
     
-    public static var imageLimit: Int = 0
+    
     
   }
 
@@ -79,6 +79,9 @@ public struct Config {
         public static var cellContentMode:UIViewContentMode = .scaleAspectFill
         public static var photoContentMode:PHImageContentMode = .aspectFill
     }
+    
+    public static var videoLimit: Int = 1
+    public static var imageLimit: Int = 1
     
   }
 

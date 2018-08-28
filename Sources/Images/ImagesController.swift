@@ -175,6 +175,14 @@ extension ImagesController: PageAware {
 }
 
 extension ImagesController: CartDelegate {
+    func cart(_ cart: Cart, didAdd video: Video) {
+        
+    }
+    
+    func cart(_ cart: Cart, didRemove video: Video) {
+        
+    }
+    
     
     func cart(_ cart: Cart, didAdd image: Image, newlyTaken: Bool) {
         stackView.reload(cart.images, added: true)
@@ -251,7 +259,7 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
             }
             
             
-            if Config.Camera.imageLimit == 0 || Config.Camera.imageLimit > cart.images.count{
+            if Config.Grid.imageLimit == 0 || Config.Grid.imageLimit > cart.images.count{
                 cart.add(item)
             }
         }

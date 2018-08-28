@@ -141,7 +141,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
         }
         
         EventHub.shared.doneWithVideos = { [weak self] in
-            if let strongSelf = self, let video = strongSelf.cart.video {
+            if let strongSelf = self, let video = strongSelf.cart.videos.first {
                 strongSelf.delegate?.galleryController(strongSelf, didSelectVideo: video)
             }
         }

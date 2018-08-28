@@ -14,6 +14,8 @@ class VideosController: UIViewController {
     let once = Once()
     let cart: Cart
     
+    
+    
     // MARK: - Init
     
     public required init(cart: Cart) {
@@ -86,7 +88,7 @@ class VideosController: UIViewController {
     }
     
     @objc func cancelButtonTouched(_ button: UIButton) {
-        cart.video = nil
+        cart.videos = []
         
         refreshView()
         configureFrameViews()
@@ -117,13 +119,13 @@ class VideosController: UIViewController {
     // MARK: - View
     
     func refreshView() {
-        if let selectedItem = cart.video {
+        if let selectedItem = cart.videos.first {
             videoBox.imageView.g_loadImage(selectedItem.asset)
         } else {
             videoBox.imageView.image = nil
         }
         
-        let hasVideo = (cart.video != nil)
+        let hasVideo = (cart.videos.count > 0)
         gridView.bottomView.g_fade(visible: hasVideo)
         UIView.animate(withDuration: 0.3) {
             self.gridView.collectionView.g_updateBottomInset(hasVideo ? self.gridView.bottomView.frame.size.height : 0)
@@ -139,7 +141,6 @@ class VideosController: UIViewController {
         return controller
     }
     
-    
     func makeGridView() -> GridView {
         let view = GridView()
         view.bottomView.alpha = 0
@@ -154,7 +155,6 @@ class VideosController: UIViewController {
         return videoBox
     }
     
-    
     //    func makeInfoLabel() -> UILabel {
     //        let label = UILabel()
     //        label.textColor = UIColor.white
@@ -164,8 +164,6 @@ class VideosController: UIViewController {
     //
     //        return label
     //    }
-    
-    
     
 }
 
@@ -212,7 +210,7 @@ extension VideosController: DropdownControllerDelegate {
 extension VideosController: VideoBoxDelegate {
     
     func videoBoxDidTap(_ videoBox: VideoBox) {
-        cart.video?.fetchPlayerItem { item in
+        cart.videos.first?.fetchPlayerItem { item in
             guard let item = item else { return }
             
             DispatchQueue.main.async {
@@ -262,10 +260,19 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let item = items[(indexPath as NSIndexPath).item]
         
-        if let selectedItem = cart.video , selectedItem == item {
-            cart.video = nil
+        if cart.videos.contains(item) {
+            cart.remove(item)
         } else {
-            cart.video = item
+            
+            for (index, video) in cart.videos.enumerated(){
+                if index == Config.Grid.videoLimit - 1 {
+                    cart.remove(video)
+                }
+                
+            }
+            if Config.Grid.videoLimit == 0 || Config.Grid.videoLimit > cart.videos.count{
+                cart.add(item)
+            }
         }
         
         refreshView()
@@ -281,12 +288,23 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func configureFrameView(_ cell: VideoCell, indexPath: IndexPath) {
+//        let item = items[(indexPath as NSIndexPath).item]
+//
+//        if let selectedItem = cart.videos.first , selectedItem == item {
+//            cell.frameView.g_quickFade()
+//        } else {
+//            cell.frameView.alpha = 0
+//        }
         let item = items[(indexPath as NSIndexPath).item]
         
-        if let selectedItem = cart.video , selectedItem == item {
+        if let index = cart.videos.index(of: item) {
             cell.frameView.g_quickFade()
+            //cell.frameView.label.text = "\(index + 1)"
         } else {
             cell.frameView.alpha = 0
         }
+
+        
+        
     }
 }
