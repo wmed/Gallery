@@ -71,7 +71,7 @@ class VideosController: UIViewController {
         gridView.collectionView.dataSource = self
         gridView.collectionView.delegate = self
         gridView.collectionView.register(VideoCell.self, forCellWithReuseIdentifier: String(describing: VideoCell.self))
-
+        
     }
     
     // MARK: - Action
@@ -126,7 +126,7 @@ class VideosController: UIViewController {
         let hasVideo = (cart.video != nil)
         gridView.bottomView.g_fade(visible: hasVideo)
         UIView.animate(withDuration: 0.3) {
-        self.gridView.collectionView.g_updateBottomInset(hasVideo ? self.gridView.bottomView.frame.size.height : 0)
+            self.gridView.collectionView.g_updateBottomInset(hasVideo ? self.gridView.bottomView.frame.size.height : 0)
         }
     }
     
@@ -229,7 +229,7 @@ extension VideosController: VideoBoxDelegate {
 }
 
 extension VideosController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
+    
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

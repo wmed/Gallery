@@ -2,31 +2,31 @@ import UIKit
 import Photos
 
 class VideosLibrary {
-
+    
     var isSyncing = false
-  var items: [Video] = []
-  var fetchResults: PHFetchResult<PHAsset>?
-
+    var items: [Video] = []
+    var fetchResults: PHFetchResult<PHAsset>?
+    
     var albums: [Album] = []
     var albumsFetchResults = [PHFetchResult<PHAssetCollection>]()
     
-  // MARK: - Initialization
-
+    // MARK: - Initialization
     
-  init() {
-
-  }
-
-  // MARK: - Logic
-
-  func reload(_ completion: @escaping () -> Void) {
-    DispatchQueue.global().async {
-      self.reloadSync()
-      DispatchQueue.main.async {
-        completion()
-      }
+    
+    init() {
+        
     }
-  }
+    
+    // MARK: - Logic
+    
+    func reload(_ completion: @escaping () -> Void) {
+        DispatchQueue.global().async {
+            self.reloadSync()
+            DispatchQueue.main.async {
+                completion()
+            }
+        }
+    }
     
     fileprivate func reloadSync() {
         if isSyncing == true{
@@ -60,17 +60,17 @@ class VideosLibrary {
         }
         isSyncing = false
     }
-
-//  fileprivate func reloadSync() {
-//    fetchResults = PHAsset.fetchAssets(with: .video, options: nil)
-//
-//    items = []
-//
-//    fetchResults?.enumerateObjects({ (asset, _, _) in
-//
-//    self.items.insert(Video(asset: asset), at: 0)
-//      //self.items.append(Video(asset: asset))
-//    })
-//  }
+    
+    //  fileprivate func reloadSync() {
+    //    fetchResults = PHAsset.fetchAssets(with: .video, options: nil)
+    //
+    //    items = []
+    //
+    //    fetchResults?.enumerateObjects({ (asset, _, _) in
+    //
+    //    self.items.insert(Video(asset: asset), at: 0)
+    //      //self.items.append(Video(asset: asset))
+    //    })
+    //  }
 }
 
