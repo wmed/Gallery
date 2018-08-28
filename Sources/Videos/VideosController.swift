@@ -2,6 +2,7 @@ import UIKit
 import Photos
 import AVKit
 
+
 class VideosController: UIViewController {
     
     lazy var dropdownController: DropdownController = self.makeDropdownController()
@@ -74,11 +75,28 @@ class VideosController: UIViewController {
         gridView.collectionView.delegate = self
         gridView.collectionView.register(VideoCell.self, forCellWithReuseIdentifier: String(describing: VideoCell.self))
         
+        
     }
     
     // MARK: - Action
     
     @objc func closeButtonTouched(_ button: UIButton) {
+        if Config.Grid.videoLimit == 1{
+            gridView.closeButton.setTitleColor(.orange, for: .normal)
+            Config.Grid.videoLimit = 15
+        }else{
+            gridView.closeButton.setTitleColor(.white, for: .normal)
+            Config.Grid.videoLimit = 1
+            if cart.videos.count > 1{
+                cart.videos = []
+                
+                refreshView()
+                configureFrameViews()
+            }
+        }
+        
+       
+        
         EventHub.shared.close?()
     }
     

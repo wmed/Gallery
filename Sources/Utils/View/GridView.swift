@@ -80,7 +80,7 @@ class GridView: UIView {
         
         closeButton.g_pin(on: .top)
         closeButton.g_pin(on: .left)
-        closeButton.g_pin(size: CGSize(width: 40, height: 40))
+        closeButton.g_pin(size: CGSize(width: 80, height: 40))
         
         arrowButton.g_pinCenter()
         arrowButton.g_pin(height: 40)
@@ -130,9 +130,11 @@ class GridView: UIView {
     
     private func makeCloseButton() -> UIButton {
         let button = UIButton(type: .custom)
-        button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
-        button.tintColor = Config.Grid.CloseButton.tintColor
-        
+        //button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
+        //button.tintColor = Config.Grid.CloseButton.tintColor
+        button.setTitle("MIXTAPE", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         return button
     }
     
