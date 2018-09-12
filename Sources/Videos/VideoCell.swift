@@ -7,6 +7,21 @@ class VideoCell: ImageCell {
     lazy var durationLabel: UILabel = self.makeDurationLabel()
     lazy var bottomOverlay: UIView = self.makeBottomOverlay()
     
+//    lazy var indexLabel: UILabel = {
+//        let label = UILabel()
+//        return label
+//    }()
+//    
+//    lazy var indexView: UIView = {
+//        let view = UIView()
+//        view.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+//        view.layer.cornerRadius = 15
+//        view.backgroundColor = Config.Grid.FrameView.borderColor
+//        return view
+//        
+//    }()
+//    
+    
     // MARK: - Config
     
     func configure(_ video: Video) {

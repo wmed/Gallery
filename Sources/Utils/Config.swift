@@ -116,7 +116,6 @@ public struct Config {
   }
 
   public struct VideoEditor {
-
     public static var quality: String = AVAssetExportPresetHighestQuality
     public static var savesEditedVideoToLibrary: Bool = false
     public static var maximumDuration: TimeInterval = 15
