@@ -67,6 +67,7 @@ class PagesController: UIViewController {
     
     func makeScrollView() -> UIScrollView {
         let scrollView = UIScrollView()
+        scrollView.isScrollEnabled = Config.PageIndicator.allowScroll
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.alwaysBounceHorizontal = false
