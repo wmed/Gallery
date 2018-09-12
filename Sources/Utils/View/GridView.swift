@@ -130,9 +130,9 @@ class GridView: UIView {
     
     private func makeCloseButton() -> UIButton {
         let button = UIButton(type: .custom)
-        //button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
-        //button.tintColor = Config.Grid.CloseButton.tintColor
-        button.setTitle("MIXTAPE", for: .normal)
+        button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
+        button.tintColor = Config.Grid.CloseButton.tintColor
+        //button.setTitle("MIXTAPE", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         return button

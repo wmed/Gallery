@@ -66,6 +66,11 @@ class VideosController: UIViewController {
         videoBox.g_pin(on: .centerY)
         videoBox.g_pin(on: .left, constant: 28)
         
+        
+        gridView.closeButton.setTitleColor(nil, for: .normal)
+        gridView.closeButton.setTitle("MIXTAPE", for: .normal)
+        gridView.closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        
         gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
         gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
         gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), for: .touchUpInside)

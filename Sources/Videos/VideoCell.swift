@@ -64,4 +64,8 @@ class VideoCell: ImageCell {
         
         return view
     }
+    
+    public func getThumbImage()->UIImage?{
+        return imageView.image
+    }
 }
