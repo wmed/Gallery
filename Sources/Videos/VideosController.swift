@@ -322,7 +322,14 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
         
         if let index = cart.videos.index(of: item) {
             cell.frameView.g_quickFade()
+            cell.frameView.label.isHidden = false
             cell.frameView.label.text = "\(index + 1)"
+            if Config.Grid.videoLimit == 1{
+                cell.frameView.indexView?.isHidden = true
+            }else{
+                cell.frameView.indexView?.isHidden = false
+            }
+            
         } else {
             cell.frameView.alpha = 0
         }

@@ -69,7 +69,7 @@ class ImageCell: UICollectionViewCell {
     return view
   }
 
-  private func makeFrameView() -> FrameView {
+func makeFrameView() -> FrameView {
     let frameView = FrameView(frame: .zero)
     frameView.alpha = 0
 

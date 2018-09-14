@@ -1,20 +1,20 @@
 import UIKit
 
+
 class FrameView: UIView {
     
-    lazy var label: UILabel = self.makeLabel()
+    public lazy var label: UILabel = self.makeLabel()
     lazy var gradientLayer: CAGradientLayer = self.makeGradientLayer()
-    lazy var indexView: UIView = {
-        let view = UIView()
-        view.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        view.layer.cornerRadius = 15
-        view.backgroundColor = Config.Grid.FrameView.borderColor
-        return view
-        
-    }()
+    public var indexView: UIView?
+
+    public let indexLabel:UILabel = UILabel()
     
     
     // MARK: - Initialization
+    public convenience init(frame: CGRect, isMultiSelect:Bool){
+        self.init(frame: frame)
+        multiSelectSetup()
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,7 +33,23 @@ class FrameView: UIView {
         layer.borderColor = Config.Grid.FrameView.borderColor.cgColor
         layer.borderWidth = 3
         
-        addSubview(label)
+        //addSubview(label)
+        //label.g_pinCenter()
+    }
+    
+    private func multiSelectSetup(){
+        let view = UIView()
+        view.layer.cornerRadius = 15
+        view.backgroundColor = Config.Grid.FrameView.borderColor
+        addSubview(view)
+        view.g_pin(size: CGSize(width: 24, height: 24))
+        view.g_pin(on: .top, constant:8)
+        view.g_pin(on: .trailing, constant:-8)
+        
+        view.addSubview(label)
+        
+        indexView = view
+        
         label.g_pinCenter()
     }
     
@@ -49,9 +65,9 @@ class FrameView: UIView {
     
     private func makeLabel() -> UILabel {
         let label = UILabel()
-        label.font = Config.Font.Main.regular.withSize(40)
-        label.textColor = UIColor.white
-        
+        label.font = Config.Font.Main.regular.withSize(9)
+        label.textColor = .white
+        label.text = ""
         return label
     }
     
