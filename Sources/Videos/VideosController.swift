@@ -15,8 +15,6 @@ class VideosController: UIViewController {
     let once = Once()
     let cart: Cart
     
-    
-    
     // MARK: - Init
     
     public required init(cart: Cart) {
@@ -86,12 +84,12 @@ class VideosController: UIViewController {
     // MARK: - Action
     
     @objc func closeButtonTouched(_ button: UIButton) {
-        if Config.Grid.videoLimit == 1{
+        if Config.Grid.videoLimit == Config.Grid.videoDefaultLimit{
             gridView.closeButton.setTitleColor(.orange, for: .normal)
-            Config.Grid.videoLimit = 15
+            Config.Grid.videoLimit = Config.Grid.videoMixtapeLimit
         }else{
             gridView.closeButton.setTitleColor(.white, for: .normal)
-            Config.Grid.videoLimit = 1
+            Config.Grid.videoLimit = Config.Grid.videoDefaultLimit
             if cart.videos.count > 1{
                 cart.videos = []
                 
@@ -148,7 +146,7 @@ class VideosController: UIViewController {
             videoBox.imageView.image = nil
         }
         
-        let hasVideo = (cart.videos.count > 0)
+        let hasVideo = !cart.videos.isEmpty
         gridView.bottomView.g_fade(visible: hasVideo)
         UIView.animate(withDuration: 0.3) {
             self.gridView.collectionView.g_updateBottomInset(hasVideo ? self.gridView.bottomView.frame.size.height : 0)
@@ -311,13 +309,6 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func configureFrameView(_ cell: VideoCell, indexPath: IndexPath) {
-//        let item = items[(indexPath as NSIndexPath).item]
-//
-//        if let selectedItem = cart.videos.first , selectedItem == item {
-//            cell.frameView.g_quickFade()
-//        } else {
-//            cell.frameView.alpha = 0
-//        }
         let item = items[(indexPath as NSIndexPath).item]
         
         if let index = cart.videos.index(of: item) {
@@ -334,7 +325,5 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
             cell.frameView.alpha = 0
         }
 
-        
-        
     }
 }

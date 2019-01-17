@@ -69,10 +69,10 @@ class VideoCell: ImageCell {
         return imageView.image
     }
     
-    override func makeFrameView() -> FrameView {
-        let frameView = FrameView(frame: .zero, isMultiSelect:true)
-        frameView.alpha = 0
-        
-        return frameView
-    }
+//    override func makeFrameView() -> FrameView {
+//        let frameView = FrameView(frame: .zero, isMultiSelect:true)
+//        frameView.alpha = 0
+//
+//        return frameView
+//    }
 }

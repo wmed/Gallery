@@ -60,6 +60,10 @@ class ImagesController: UIViewController {
         stackView.g_pin(on: .left, constant: 28)
         stackView.g_pin(size: CGSize(width: 56, height: 56))
         
+        gridView.closeButton.setTitleColor(nil, for: .normal)
+        gridView.closeButton.setTitle("BATCH", for: .normal)
+        gridView.closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        
         gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
         gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
         gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), for: .touchUpInside)
@@ -74,6 +78,19 @@ class ImagesController: UIViewController {
     // MARK: - Action
     
     @objc func closeButtonTouched(_ button: UIButton) {
+        if Config.Grid.imageLimit == Config.Grid.imageDefaultLimit{
+            gridView.closeButton.setTitleColor(.orange, for: .normal)
+            Config.Grid.imageLimit = Config.Grid.imageBatchLimit
+        }else{
+            gridView.closeButton.setTitleColor(.white, for: .normal)
+            Config.Grid.imageLimit = Config.Grid.imageDefaultLimit
+            if cart.images.count > 1{
+                cart.images = []
+                
+                refreshView()
+                configureFrameViews()
+            }
+        }
         EventHub.shared.close?()
     }
     
@@ -124,7 +141,6 @@ class ImagesController: UIViewController {
         UIView.animate(withDuration: 0.3) {
              self.gridView.collectionView.g_updateBottomInset(hasImages ? self.gridView.bottomView.frame.size.height : 0)
         }
-       
     }
     
     // MARK: - Controls
@@ -248,16 +264,20 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let item = items[(indexPath as NSIndexPath).item]
         
-        
-        
         if cart.images.contains(item) {
             cart.remove(item)
         } else {
             
-            for image in cart.images{
-                cart.remove(image)
-            }
+//            for image in cart.images{
+//                cart.remove(image)
+//            }
             
+            for (index, image) in cart.images.enumerated(){
+                if index == Config.Grid.imageLimit - 1 {
+                    cart.remove(image)
+                }
+                
+            }
             
             if Config.Grid.imageLimit == 0 || Config.Grid.imageLimit > cart.images.count{
                 cart.add(item)
@@ -276,13 +296,29 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
     }
     
     func configureFrameView(_ cell: ImageCell, indexPath: IndexPath) {
+//        let item = items[(indexPath as NSIndexPath).item]
+//
+//        if let index = cart.images.index(of: item) {
+//            cell.frameView.g_quickFade()
+//            //cell.frameView.label.text = "\(index + 1)"
+//        } else {
+//            cell.frameView.alpha = 0
+//        }
         let item = items[(indexPath as NSIndexPath).item]
         
         if let index = cart.images.index(of: item) {
             cell.frameView.g_quickFade()
-            //cell.frameView.label.text = "\(index + 1)"
+            cell.frameView.label.isHidden = false
+            cell.frameView.label.text = "\(index + 1)"
+            if Config.Grid.imageLimit == 1{
+                cell.frameView.indexView?.isHidden = true
+            }else{
+                cell.frameView.indexView?.isHidden = false
+            }
+            
         } else {
             cell.frameView.alpha = 0
         }
+        
     }
 }

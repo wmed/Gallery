@@ -27,7 +27,6 @@ class FrameView: UIView {
     }
     
     // MARK: - Setup
-    
     private func setup() {
         layer.addSublayer(gradientLayer)
         layer.borderColor = Config.Grid.FrameView.borderColor.cgColor
@@ -39,7 +38,7 @@ class FrameView: UIView {
     
     private func multiSelectSetup(){
         let view = UIView()
-        view.layer.cornerRadius = 15
+        view.layer.cornerRadius = 12
         view.backgroundColor = Config.Grid.FrameView.borderColor
         addSubview(view)
         view.g_pin(size: CGSize(width: 24, height: 24))

@@ -159,6 +159,8 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
 //        }
     }
     
+    //cf946269
+    
     // MARK: - PermissionControllerDelegate
     
     func permissionControllerDidFinish(_ controller: PermissionController) {

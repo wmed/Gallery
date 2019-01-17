@@ -80,6 +80,10 @@ public struct Config {
     
     public static var videoLimit: Int = 1
     public static var imageLimit: Int = 1
+    public static let videoDefaultLimit: Int = 1
+    public static let imageDefaultLimit: Int = 1
+    public static var videoMixtapeLimit: Int = 15
+    public static var imageBatchLimit: Int = 50
     
   }
 
