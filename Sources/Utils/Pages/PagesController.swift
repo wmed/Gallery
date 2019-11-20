@@ -172,6 +172,11 @@ class PagesController: UIViewController {
     func notify() {
         if let controller = controllers[selectedIndex] as? PageAware {
             controller.pageDidShow()
+            if let _ = controller as? ImagesController {
+                EventHub.shared.imageTabSelected?()
+            } else if let _ = controller as? VideosController {
+                EventHub.shared.videoTabSelected?()
+            }
         }
     }
     

@@ -7,6 +7,9 @@ public protocol GalleryControllerDelegate: class {
     func galleryController(_ controller: GalleryController, didSelectVideos videos: [Video])
     func galleryController(_ controller: GalleryController, requestLightbox images: [Image])
     func galleryControllerDidCancel(_ controller: GalleryController)
+    func galleryBatchToggle(on:Bool)
+    func galleryVideoTabSelected()
+    func galleryImageTabSelected()
     
 }
 
@@ -131,6 +134,30 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
         EventHub.shared.close = { [weak self] in
             if let strongSelf = self {
                 strongSelf.delegate?.galleryControllerDidCancel(strongSelf)
+            }
+        }
+        
+        EventHub.shared.imageTabSelected = { [weak self] in
+            if let strongSelf = self {
+                strongSelf.delegate?.galleryImageTabSelected()
+            }
+        }
+        
+        EventHub.shared.videoTabSelected = { [weak self] in
+            if let strongSelf = self {
+                strongSelf.delegate?.galleryVideoTabSelected()
+            }
+        }
+        
+        EventHub.shared.batchOn = {  [weak self] in
+            if let strongSelf = self {
+                strongSelf.delegate?.galleryBatchToggle(on:true)
+            }
+        }
+        
+        EventHub.shared.batchOff = { [weak self] in
+            if let strongSelf = self {
+                strongSelf.delegate?.galleryBatchToggle(on:false)
             }
         }
         

@@ -154,6 +154,16 @@ class GridView: UIView {
         button.setTitle("Gallery.Done".g_localize(fallback: "Cancel"), for: UIControlState())
         return button
     }
+//    
+//    private func makeSizeButton() -> UIButton {
+//        let button = UIButton(type: .system)
+//        button.setTitleColor(UIColor.lightGray, for: UIControlState())
+//        button.titleLabel?.font = Config.Font.Text.regular.withSize(14)
+//        let vidSize = VideoSize.tvPortrait3x4
+//        button.setTitle(, for: UIControlState())
+//        return button
+//    }
+//    
     
     private func makeCollectionView() -> UICollectionView {
         let layout = UICollectionViewFlowLayout()

@@ -70,6 +70,8 @@ class ImagesController: UIViewController {
         gridView.cancelButton.addTarget(self, action: #selector(cancelButtonTouched(_:)), for: .touchUpInside)
         stackView.addTarget(self, action: #selector(stackViewTouched(_:)), for: .touchUpInside)
         
+        
+        
         gridView.collectionView.dataSource = self
         gridView.collectionView.delegate = self
         gridView.collectionView.register(ImageCell.self, forCellWithReuseIdentifier: String(describing: ImageCell.self))
@@ -80,8 +82,11 @@ class ImagesController: UIViewController {
     @objc func closeButtonTouched(_ button: UIButton) {
         if Config.Grid.imageLimit == Config.Grid.imageDefaultLimit{
             gridView.closeButton.setTitleColor(.orange, for: .normal)
+            
             Config.Grid.imageLimit = Config.Grid.imageBatchLimit
+            EventHub.shared.batchOn?()
         }else{
+            EventHub.shared.batchOff?()
             gridView.closeButton.setTitleColor(.white, for: .normal)
             Config.Grid.imageLimit = Config.Grid.imageDefaultLimit
             if cart.images.count > 1{

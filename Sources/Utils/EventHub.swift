@@ -14,5 +14,9 @@ class EventHub {
     var doneWithImages: Action?
     var doneWithVideos: Action?
     var stackViewTouched: Action?
+    var batchOn: Action?
+    var batchOff: Action?
+    var imageTabSelected: Action?
+    var videoTabSelected: Action?
     //var doneTouched: Action?
 }
