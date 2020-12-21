@@ -42,9 +42,9 @@ class VideosController: UIViewController {
         
         view.addSubview(gridView)
         
-        addChildViewController(dropdownController)
+        addChild(dropdownController)
         gridView.insertSubview(dropdownController.view, belowSubview: gridView.topView)
-        dropdownController.didMove(toParentViewController: self)
+        dropdownController.didMove(toParent: self)
         
         [videoBox].forEach {
             gridView.bottomView.addSubview($0)
@@ -311,7 +311,7 @@ extension VideosController: UICollectionViewDataSource, UICollectionViewDelegate
     func configureFrameView(_ cell: VideoCell, indexPath: IndexPath) {
         let item = items[(indexPath as NSIndexPath).item]
         
-        if let index = cart.videos.index(of: item) {
+        if let index = cart.videos.firstIndex(of: item) {
             cell.frameView.g_quickFade()
             cell.frameView.label.isHidden = false
             cell.frameView.label.text = "\(index + 1)"

@@ -79,7 +79,7 @@ class PagesController: UIViewController {
     
     func makePageIndicator() -> PageIndicator {
         
-        let items = controllers.flatMap { (vc) -> (name:String, selected:String, unselected:String) in
+        let items = controllers.compactMap { (vc) -> (name:String, selected:String, unselected:String) in
             let title = vc.title ?? ""
             return (name:title, selected:"\(title.lowercased())Selected", unselected:"\(title.lowercased())Unselected")
         }
@@ -125,9 +125,9 @@ class PagesController: UIViewController {
         scrollViewContentView.g_pinEdges()
         
         for (i, controller) in controllers.enumerated() {
-            addChildViewController(controller)
+            addChild(controller)
             scrollViewContentView.addSubview(controller.view)
-            controller.didMove(toParentViewController: self)
+            controller.didMove(toParent: self)
             
             controller.view.g_pin(on: .top)
             controller.view.g_pin(on: .bottom)

@@ -44,7 +44,7 @@ public class Cart {
     }
     
     public func remove(_ image: Image) {
-        guard let index = images.index(of: image) else { return }
+        guard let index = images.firstIndex(of: image) else { return }
         
         images.remove(at: index)
         
@@ -64,7 +64,7 @@ public class Cart {
     }
     
     public func remove(_ video: Video) {
-        guard let index = videos.index(of: video) else { return }
+        guard let index = videos.firstIndex(of: video) else { return }
         
         videos.remove(at: index)
         

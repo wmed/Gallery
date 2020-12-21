@@ -40,9 +40,9 @@ class ImagesController: UIViewController {
         
         view.addSubview(gridView)
         
-        addChildViewController(dropdownController)
+        addChild(dropdownController)
         gridView.insertSubview(dropdownController.view, belowSubview: gridView.topView)
-        dropdownController.didMove(toParentViewController: self)
+        dropdownController.didMove(toParent: self)
         
         gridView.bottomView.addSubview(stackView)
         
@@ -61,7 +61,7 @@ class ImagesController: UIViewController {
         stackView.g_pin(size: CGSize(width: 56, height: 56))
         
         gridView.closeButton.setTitleColor(nil, for: .normal)
-        gridView.closeButton.setTitle("BATCH", for: .normal)
+        //gridView.closeButton.setTitle("BATCH", for: .normal)
         gridView.closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         
         gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
@@ -69,8 +69,6 @@ class ImagesController: UIViewController {
         gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), for: .touchUpInside)
         gridView.cancelButton.addTarget(self, action: #selector(cancelButtonTouched(_:)), for: .touchUpInside)
         stackView.addTarget(self, action: #selector(stackViewTouched(_:)), for: .touchUpInside)
-        
-        
         
         gridView.collectionView.dataSource = self
         gridView.collectionView.delegate = self
@@ -311,7 +309,7 @@ extension ImagesController: UICollectionViewDataSource, UICollectionViewDelegate
 //        }
         let item = items[(indexPath as NSIndexPath).item]
         
-        if let index = cart.images.index(of: item) {
+        if let index = cart.images.firstIndex(of: item) {
             cell.frameView.g_quickFade()
             cell.frameView.label.isHidden = false
             cell.frameView.label.text = "\(index + 1)"

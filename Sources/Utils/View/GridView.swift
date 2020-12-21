@@ -11,6 +11,7 @@ class GridView: UIView {
     lazy var arrowButton: ArrowButton = self.makeArrowButton()
     lazy var collectionView: UICollectionView = self.makeCollectionView()
     lazy var closeButton: UIButton = self.makeCloseButton()
+    lazy var settingButton: UIButton = self.makeSettingsButton()
     lazy var doneButton: UIButton = self.makeDoneButton()
     lazy var cancelButton = makeCancelButton()
     lazy var emptyView: UIView = self.makeEmptyView()
@@ -36,7 +37,7 @@ class GridView: UIView {
             addSubview($0)
         }
         
-        [closeButton, arrowButton].forEach {
+        [closeButton, arrowButton, settingButton].forEach {
             topView.addSubview($0)
         }
         
@@ -130,28 +131,39 @@ class GridView: UIView {
     
     private func makeCloseButton() -> UIButton {
         let button = UIButton(type: .custom)
-        button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
+        //button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControl.State())
         button.tintColor = Config.Grid.CloseButton.tintColor
         //button.setTitle("MIXTAPE", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        button.setTitle(Config.Grid.CloseButton.buttonName, for: .normal)
         return button
     }
     
-    private func makeDoneButton() -> UIButton {
+    private func makeSettingsButton() -> UIButton {
         let button = UIButton(type: .system)
-        button.setTitleColor(UIColor(red: 1.0, green: 110/225, blue: 64/255, alpha: 1.0), for: UIControlState())
+        button.setTitleColor(UIColor(red: 1.0, green: 110/225, blue: 64/255, alpha: 1.0), for: UIControl.State())
         button.setTitleColor(UIColor.lightGray, for: .disabled)
         button.titleLabel?.font = Config.Font.Text.regular.withSize(14)
-        button.setTitle("Gallery.Done".g_localize(fallback: "Next"), for: UIControlState())
+        button.setTitle("Settings", for: .normal)
+        return button
+    }
+    
+    
+    private func makeDoneButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitleColor(UIColor(red: 1.0, green: 110/225, blue: 64/255, alpha: 1.0), for: UIControl.State())
+        button.setTitleColor(UIColor.lightGray, for: .disabled)
+        button.titleLabel?.font = Config.Font.Text.regular.withSize(14)
+        button.setTitle("Gallery.Done".g_localize(fallback: "Next"), for: UIControl.State())
         return button
     }
     
     private func makeCancelButton() -> UIButton {
         let button = UIButton(type: .system)
-        button.setTitleColor(UIColor.lightGray, for: UIControlState())
+        button.setTitleColor(UIColor.lightGray, for: UIControl.State())
         button.titleLabel?.font = Config.Font.Text.regular.withSize(14)
-        button.setTitle("Gallery.Done".g_localize(fallback: "Cancel"), for: UIControlState())
+        button.setTitle("Gallery.Done".g_localize(fallback: "Cancel"), for: UIControl.State())
         return button
     }
 //    
@@ -184,7 +196,7 @@ class GridView: UIView {
     }
     
     private func makeLoadingIndicator() -> UIActivityIndicatorView {
-        let view = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let view = UIActivityIndicatorView(style: .whiteLarge)
         view.color = .gray
         view.hidesWhenStopped = true
         

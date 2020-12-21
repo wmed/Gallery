@@ -48,7 +48,7 @@ class DropdownController: UIViewController {
     tableView.register(AlbumCell.self, forCellReuseIdentifier: String(describing: AlbumCell.self))
 
     tableView.g_pinEdges()
-    tableView.contentInset = UIEdgeInsetsMake(0, 0, 25, 0)
+    tableView.contentInset = UIEdgeInsets.init(top: 0, left: 0, bottom: 25, right: 0)
     
 
   }
@@ -69,7 +69,7 @@ class DropdownController: UIViewController {
       collapsedTopConstraint?.isActive = true
     }
 
-    UIView.animate(withDuration: 0.25, delay: 0, options: UIViewAnimationOptions(), animations: {
+    UIView.animate(withDuration: 0.25, delay: 0, options: UIView.AnimationOptions(), animations: {
       self.view.superview?.layoutIfNeeded()
     }, completion: { finished in
       self.animating = false

@@ -57,9 +57,9 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
     // MARK: - Child view controller
     
     public func reloadLibraries(){
-        for childVC in childViewControllers{
+        for childVC in children{
             if let pagesVC = childVC as? PagesController {
-                for page in pagesVC.childViewControllers{
+                for page in pagesVC.children{
                     if let vc = page as? PageAware{
                         vc.reloadContent()
                     }
@@ -97,9 +97,9 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
         
         let useCamera = Permission.Camera.needsPermission && Permission.Camera.status == .authorized
 
-        let tabsToShow = Config.tabsToShow.flatMap { $0 != .cameraTab ? $0 : (useCamera ? $0 : nil) }
+        let tabsToShow = Config.tabsToShow.compactMap { $0 != .cameraTab ? $0 : (useCamera ? $0 : nil) }
         
-        let controllers: [UIViewController] = tabsToShow.flatMap { tab in
+        let controllers: [UIViewController] = tabsToShow.compactMap { tab in
             if tab == .imageTab {
                 return makeImagesController()
             } else if tab == .cameraTab {
@@ -116,7 +116,7 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
         }
         
         let controller = PagesController(controllers: controllers)
-        controller.selectedIndex = tabsToShow.index(of: Config.initialTab ?? .cameraTab) ?? 0
+        controller.selectedIndex = tabsToShow.firstIndex(of: Config.initialTab ?? .cameraTab) ?? 0
         
         return controller
     }
