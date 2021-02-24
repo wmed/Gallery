@@ -76,6 +76,7 @@ class AlbumCell: UITableViewCell {
     let label = UILabel()
     label.numberOfLines = 1
     label.font = Config.Font.Text.regular.withSize(14)
+    label.textColor = .darkGray
 
     return label
   }
@@ -84,7 +85,8 @@ class AlbumCell: UITableViewCell {
     let label = UILabel()
     label.numberOfLines = 1
     label.font = Config.Font.Text.regular.withSize(10)
-
+    label.textColor = .darkGray
+    
     return label
   }
 }
