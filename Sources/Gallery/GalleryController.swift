@@ -76,13 +76,6 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
         return controller
     }
     
-    func makeCameraController() -> CameraController {
-        let controller = CameraController(cart: cart)
-        controller.title = "Gallery.Camera.Title".g_localize(fallback: "CAMERA")
-        
-        return controller
-    }
-    
     func makeVideosController() -> VideosController {
         let controller = VideosController(cart: cart)
         controller.title = "Gallery.Videos.Title".g_localize(fallback: "VIDEOS")
@@ -102,8 +95,6 @@ public class GalleryController: UIViewController, PermissionControllerDelegate {
         let controllers: [UIViewController] = tabsToShow.compactMap { tab in
             if tab == .imageTab {
                 return makeImagesController()
-            } else if tab == .cameraTab {
-                return makeCameraController()
             } else if tab == .videoTab {
                 return makeVideosController()
             } else {
