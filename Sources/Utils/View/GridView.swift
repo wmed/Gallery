@@ -99,7 +99,7 @@ class GridView: UIView {
     
     private func makeTopView() -> UIView {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 20/255, green: 25/255, blue: 35/255, alpha: 1.0)
+        view.backgroundColor = UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 1.0)
         
         return view
     }
