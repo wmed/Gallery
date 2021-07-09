@@ -60,6 +60,11 @@ public struct Config {
             public static var buttonName = "BATCH"
         }
         
+        public struct VideoBatch {
+            public static var tintColor: UIColor = UIColor(red: 109/255, green: 107/255, blue: 132/255, alpha: 1)
+            public static var buttonName = "VBATCH"
+        }
+        
         public struct ArrowButton {
             public static var tintColor: UIColor = UIColor.white
         }

@@ -178,6 +178,7 @@ extension ImagesController: PageAware {
     }
     
     func pageDidShow() {
+        gridView.videoBatchButton.isHidden = true
         once.run {
             library.reload {
                 self.gridView.loadingIndicator.stopAnimating()

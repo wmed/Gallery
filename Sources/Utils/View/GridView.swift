@@ -11,6 +11,7 @@ class GridView: UIView {
     lazy var arrowButton: ArrowButton = self.makeArrowButton()
     lazy var collectionView: UICollectionView = self.makeCollectionView()
     lazy var closeButton: UIButton = self.makeCloseButton()
+    lazy var videoBatchButton: UIButton = self.makeVideoBatchButton()
     lazy var settingButton: UIButton = self.makeSettingsButton()
     lazy var doneButton: UIButton = self.makeDoneButton()
     lazy var cancelButton = makeCancelButton()
@@ -37,7 +38,7 @@ class GridView: UIView {
             addSubview($0)
         }
         
-        [closeButton, arrowButton, settingButton].forEach {
+        [closeButton, arrowButton, settingButton, videoBatchButton].forEach {
             topView.addSubview($0)
         }
         
@@ -82,6 +83,10 @@ class GridView: UIView {
         closeButton.g_pin(on: .top)
         closeButton.g_pin(on: .left)
         closeButton.g_pin(size: CGSize(width: 80, height: 40))
+        
+        videoBatchButton.g_pin(on: .top)
+        videoBatchButton.g_pin(on: .leading, view: closeButton, on: .trailing, constant: 5)
+        videoBatchButton.g_pin(size: CGSize(width: 80, height: 40))
         
         arrowButton.g_pinCenter()
         arrowButton.g_pin(height: 40)
@@ -137,6 +142,15 @@ class GridView: UIView {
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         button.setTitle(Config.Grid.CloseButton.buttonName, for: .normal)
+        return button
+    }
+    
+    private func makeVideoBatchButton() -> UIButton {
+        let button = UIButton(type: .custom)
+        button.tintColor = Config.Grid.VideoBatch.tintColor
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        button.setTitle(Config.Grid.VideoBatch.buttonName, for: .normal)
         return button
     }
     

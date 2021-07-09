@@ -2,6 +2,12 @@ import UIKit
 import Photos
 import AVKit
 
+enum VideoSelectState {
+    case single
+    case mixtape
+    case batch
+}
+
 
 class VideosController: UIViewController {
     
@@ -14,6 +20,8 @@ class VideosController: UIViewController {
     var selectedAlbum: Album?
     let once = Once()
     let cart: Cart
+    
+    var videoSelectState = VideoSelectState.single
     
     // MARK: - Init
     
@@ -73,6 +81,7 @@ class VideosController: UIViewController {
         gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
         gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), for: .touchUpInside)
         gridView.cancelButton.addTarget(self, action: #selector(cancelButtonTouched(_:)), for: .touchUpInside)
+        gridView.videoBatchButton.addTarget(self, action: #selector(videoBatchTouched(_:)), for: .touchUpInside)
         
         gridView.collectionView.dataSource = self
         gridView.collectionView.delegate = self
@@ -83,11 +92,12 @@ class VideosController: UIViewController {
     
     // MARK: - Action
     
-    @objc func closeButtonTouched(_ button: UIButton) {
-        if Config.Grid.videoLimit == Config.Grid.videoDefaultLimit{
-            gridView.closeButton.setTitleColor(.orange, for: .normal)
-            Config.Grid.videoLimit = Config.Grid.videoMixtapeLimit
-        }else{
+    func updateVideoSelected(state:VideoSelectState){
+        let newState = state == videoSelectState ? .single : state
+        switch newState {
+       
+        case .single:
+            gridView.videoBatchButton.setTitleColor(.white, for: .normal)
             gridView.closeButton.setTitleColor(.white, for: .normal)
             Config.Grid.videoLimit = Config.Grid.videoDefaultLimit
             if cart.videos.count > 1{
@@ -96,7 +106,42 @@ class VideosController: UIViewController {
                 refreshView()
                 configureFrameViews()
             }
+            EventHub.shared.batchOff?()
+        case .mixtape:
+            gridView.videoBatchButton.setTitleColor(.white, for: .normal)
+            gridView.closeButton.setTitleColor(.orange, for: .normal)
+            Config.Grid.videoLimit = Config.Grid.videoMixtapeLimit
+            EventHub.shared.batchOff?()
+        case .batch:
+            gridView.videoBatchButton.setTitleColor(.orange, for: .normal)
+            gridView.closeButton.setTitleColor(.white, for: .normal)
+            Config.Grid.videoLimit = Config.Grid.videoMixtapeLimit
+            EventHub.shared.batchOn?()
         }
+        videoSelectState = newState
+        
+    }
+    
+    @objc func videoBatchTouched(_ button:UIButton) {
+        updateVideoSelected(state: .batch)
+    }
+    
+    
+    @objc func closeButtonTouched(_ button: UIButton) {
+        updateVideoSelected(state: .mixtape)
+//        if Config.Grid.videoLimit == Config.Grid.videoDefaultLimit{
+//            gridView.closeButton.setTitleColor(.orange, for: .normal)
+//            Config.Grid.videoLimit = Config.Grid.videoMixtapeLimit
+//        }else{
+//            gridView.closeButton.setTitleColor(.white, for: .normal)
+//            Config.Grid.videoLimit = Config.Grid.videoDefaultLimit
+//            if cart.videos.count > 1{
+//                cart.videos = []
+//
+//                refreshView()
+//                configureFrameViews()
+//            }
+//        }
         
        
         
@@ -196,6 +241,7 @@ extension VideosController: PageAware {
         
     }
     func pageDidShow() {
+        gridView.videoBatchButton.isHidden = false
         once.run {
             library.reload {
                 self.gridView.loadingIndicator.stopAnimating()
