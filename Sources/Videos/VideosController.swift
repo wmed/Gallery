@@ -129,22 +129,6 @@ class VideosController: UIViewController {
     
     @objc func closeButtonTouched(_ button: UIButton) {
         updateVideoSelected(state: .mixtape)
-//        if Config.Grid.videoLimit == Config.Grid.videoDefaultLimit{
-//            gridView.closeButton.setTitleColor(.orange, for: .normal)
-//            Config.Grid.videoLimit = Config.Grid.videoMixtapeLimit
-//        }else{
-//            gridView.closeButton.setTitleColor(.white, for: .normal)
-//            Config.Grid.videoLimit = Config.Grid.videoDefaultLimit
-//            if cart.videos.count > 1{
-//                cart.videos = []
-//
-//                refreshView()
-//                configureFrameViews()
-//            }
-//        }
-        
-       
-        
         EventHub.shared.close?()
     }
     
@@ -241,7 +225,7 @@ extension VideosController: PageAware {
         
     }
     func pageDidShow() {
-        gridView.videoBatchButton.isHidden = false
+        gridView.videoBatchButton.isHidden = Config.Grid.VideoBatch.hideButton
         once.run {
             library.reload {
                 self.gridView.loadingIndicator.stopAnimating()
