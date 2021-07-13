@@ -57,14 +57,22 @@ public struct Config {
         
         public struct CloseButton {
             public static var tintColor: UIColor = UIColor(red: 109/255, green: 107/255, blue: 132/255, alpha: 1)
-            public static var buttonName = "BATCH"
+            public static var buttonName = "CLOSE"
+            public static var hideButton = true
         }
         
-        public struct VideoBatch {
+        public struct BatchButton {
             public static var hideButton = true
             public static var tintColor: UIColor = UIColor(red: 109/255, green: 107/255, blue: 132/255, alpha: 1)
             public static var buttonName = "BATCH"
         }
+        
+        public struct MixtapeButton {
+            public static var tintColor: UIColor = UIColor(red: 109/255, green: 107/255, blue: 132/255, alpha: 1)
+            public static var buttonName = "MIXTAPE"
+            public static var hideButton = false
+        }
+
         
         public struct ArrowButton {
             public static var tintColor: UIColor = UIColor.white

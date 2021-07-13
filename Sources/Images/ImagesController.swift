@@ -13,6 +13,8 @@ class ImagesController: UIViewController {
     let once = Once()
     let cart: Cart
     
+    var imageSelectState = GallerySelectState.single
+    
     // MARK: - Init
     
     public required init(cart: Cart) {
@@ -68,6 +70,7 @@ class ImagesController: UIViewController {
         gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
         gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), for: .touchUpInside)
         gridView.cancelButton.addTarget(self, action: #selector(cancelButtonTouched(_:)), for: .touchUpInside)
+        gridView.batchExportButton.addTarget(self, action: #selector(batchButtonTouched), for: .touchUpInside)
         stackView.addTarget(self, action: #selector(stackViewTouched(_:)), for: .touchUpInside)
         
         gridView.collectionView.dataSource = self
@@ -78,24 +81,52 @@ class ImagesController: UIViewController {
     // MARK: - Action
     
     @objc func closeButtonTouched(_ button: UIButton) {
-        if Config.Grid.imageLimit == Config.Grid.imageDefaultLimit{
-            gridView.closeButton.setTitleColor(.orange, for: .normal)
+//        if Config.Grid.imageLimit == Config.Grid.imageDefaultLimit{
+//            gridView.closeButton.setTitleColor(.orange, for: .normal)
+//
+//            Config.Grid.imageLimit = Config.Grid.imageBatchLimit
+//            EventHub.shared.batchOn?()
+//        }else{
+//            EventHub.shared.batchOff?()
+//            gridView.closeButton.setTitleColor(.white, for: .normal)
+//            Config.Grid.imageLimit = Config.Grid.imageDefaultLimit
+//            if cart.images.count > 1{
+//                cart.images = []
+//
+//                refreshView()
+//                configureFrameViews()
+//            }
+//        }
+        EventHub.shared.close?()
+    }
+    
+    @objc func batchButtonTouched(_ button:UIButton) {
+        imageSelectState = imageSelectState == .single ? .batch : .single
+        updateImagesSelected(state: imageSelectState)
+        
+    }
+    
+    func updateImagesSelected(state:GallerySelectState){
+        if imageSelectState == .batch{
+            gridView.doneButton.setTitle("Batch Export", for: .normal)
+            gridView.batchExportButton.tintColor = .orange
             
             Config.Grid.imageLimit = Config.Grid.imageBatchLimit
             EventHub.shared.batchOn?()
-        }else{
+        } else {
+            gridView.doneButton.setTitle("Next", for: .normal)
             EventHub.shared.batchOff?()
-            gridView.closeButton.setTitleColor(.white, for: .normal)
+            gridView.batchExportButton.tintColor = .white
             Config.Grid.imageLimit = Config.Grid.imageDefaultLimit
             if cart.images.count > 1{
                 cart.images = []
-                
                 refreshView()
                 configureFrameViews()
             }
         }
-        EventHub.shared.close?()
     }
+    
+    
     
     @objc func doneButtonTouched(_ button: UIButton) {
         EventHub.shared.doneWithImages?()
@@ -178,7 +209,8 @@ extension ImagesController: PageAware {
     }
     
     func pageDidShow() {
-        gridView.videoBatchButton.isHidden = true
+        gridView.mixtapeButton.isHidden = true
+        updateImagesSelected(state: imageSelectState)
         once.run {
             library.reload {
                 self.gridView.loadingIndicator.stopAnimating()

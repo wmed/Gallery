@@ -11,7 +11,8 @@ class GridView: UIView {
     lazy var arrowButton: ArrowButton = self.makeArrowButton()
     lazy var collectionView: UICollectionView = self.makeCollectionView()
     lazy var closeButton: UIButton = self.makeCloseButton()
-    lazy var videoBatchButton: UIButton = self.makeVideoBatchButton()
+    lazy var batchExportButton: UIButton = self.makeVideoBatchButton()
+    lazy var mixtapeButton: UIButton = self.makeMixtapeButton()
     lazy var settingButton: UIButton = self.makeSettingsButton()
     lazy var doneButton: UIButton = self.makeDoneButton()
     lazy var cancelButton = makeCancelButton()
@@ -38,12 +39,12 @@ class GridView: UIView {
             addSubview($0)
         }
         
-        [closeButton, arrowButton, settingButton, videoBatchButton].forEach {
+        [closeButton, arrowButton, settingButton, batchExportButton, mixtapeButton].forEach {
             topView.addSubview($0)
         }
         
         [bottomBlurView, doneButton, cancelButton].forEach {
-            bottomView.addSubview($0 as! UIView)
+            bottomView.addSubview($0)
         }
         
         Constraint.on(
@@ -83,17 +84,24 @@ class GridView: UIView {
         closeButton.g_pin(on: .top)
         closeButton.g_pin(on: .left)
         closeButton.g_pin(size: CGSize(width: 80, height: 40))
+        closeButton.isHidden = Config.Grid.CloseButton.hideButton
         
-        videoBatchButton.g_pin(on: .top)
-        videoBatchButton.g_pin(on: .leading, view: closeButton, on: .trailing, constant: 5)
-        videoBatchButton.g_pin(size: CGSize(width: 80, height: 40))
+        mixtapeButton.g_pin(on: .top)
+        mixtapeButton.g_pin(on: .left)
+        mixtapeButton.g_pin(size: CGSize(width: 60, height: 40))
+        mixtapeButton.isHidden = Config.Grid.MixtapeButton.hideButton
+        
+        batchExportButton.g_pin(on: .top)
+        batchExportButton.g_pin(on: .leading, view: mixtapeButton, on: .trailing, constant: 5)
+        batchExportButton.g_pin(size: CGSize(width: 60, height: 40))
+        batchExportButton.isHidden = Config.Grid.BatchButton.hideButton
         
         arrowButton.g_pinCenter()
         arrowButton.g_pin(height: 40)
         
         doneButton.g_pin(on: .centerY)
         doneButton.g_pin(width: 90)
-        doneButton.g_pin(on: .right, constant: -1)
+        doneButton.g_pin(on: .right, constant: -20)
         
         cancelButton.g_pin(on: .centerY)
         cancelButton.g_pin(width: 90)
@@ -147,10 +155,18 @@ class GridView: UIView {
     
     private func makeVideoBatchButton() -> UIButton {
         let button = UIButton(type: .custom)
-        button.tintColor = Config.Grid.VideoBatch.tintColor
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        button.setTitle(Config.Grid.VideoBatch.buttonName, for: .normal)
+        button.tintColor = .white //Config.Grid.VideoBatch.tintColor
+        button.setImage(GalleryBundle.image("Batch Icon")?.withRenderingMode(.alwaysTemplate), for: UIControl.State())
+        return button
+    }
+    
+    private func makeMixtapeButton() -> UIButton {
+        let button = UIButton(type: .custom)
+        button.tintColor = .white//Config.Grid.VideoBatch.tintColor
+        //button.setTitleColor(.white, for: .normal)
+        //button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        button.setImage(GalleryBundle.image("Mixtape Icon")?.withRenderingMode(.alwaysTemplate), for: UIControl.State())
+        //button.setTitle(Config.Grid.VideoBatch.buttonName, for: .normal)
         return button
     }
     

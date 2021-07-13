@@ -2,7 +2,7 @@ import UIKit
 import Photos
 import AVKit
 
-enum VideoSelectState {
+enum GallerySelectState {
     case single
     case mixtape
     case batch
@@ -21,7 +21,7 @@ class VideosController: UIViewController {
     let once = Once()
     let cart: Cart
     
-    var videoSelectState = VideoSelectState.single
+    var videoSelectState = GallerySelectState.single
     
     // MARK: - Init
     
@@ -73,15 +73,17 @@ class VideosController: UIViewController {
         videoBox.g_pin(on: .left, constant: 28)
         
         
-        gridView.closeButton.setTitleColor(nil, for: .normal)
-        gridView.closeButton.setTitle("MIXTAPE", for: .normal)
+        //gridView.closeButton.setTitleColor(nil, for: .normal)
+        //gridView.closeButton.setTitle("MIXTAPE", for: .normal)
+        //button.setImage(GalleryBundle.image("gallery_close")?.withRenderingMode(.alwaysTemplate), for: UIControl.State())
         gridView.closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         
         gridView.closeButton.addTarget(self, action: #selector(closeButtonTouched(_:)), for: .touchUpInside)
         gridView.doneButton.addTarget(self, action: #selector(doneButtonTouched(_:)), for: .touchUpInside)
         gridView.arrowButton.addTarget(self, action: #selector(arrowButtonTouched(_:)), for: .touchUpInside)
         gridView.cancelButton.addTarget(self, action: #selector(cancelButtonTouched(_:)), for: .touchUpInside)
-        gridView.videoBatchButton.addTarget(self, action: #selector(videoBatchTouched(_:)), for: .touchUpInside)
+        gridView.batchExportButton.addTarget(self, action: #selector(videoBatchTouched(_:)), for: .touchUpInside)
+        gridView.mixtapeButton.addTarget(self, action: #selector(mixtapeButtonTouched(_:)), for: .touchUpInside)
         
         gridView.collectionView.dataSource = self
         gridView.collectionView.delegate = self
@@ -92,40 +94,52 @@ class VideosController: UIViewController {
     
     // MARK: - Action
     
-    func updateVideoSelected(state:VideoSelectState){
-        let newState = state == videoSelectState ? .single : state
-        switch newState {
+    func updateVideoSelected(state:GallerySelectState){
+        
+        switch videoSelectState {
        
         case .single:
-            gridView.videoBatchButton.setTitleColor(.white, for: .normal)
-            gridView.closeButton.setTitleColor(.white, for: .normal)
+            gridView.doneButton.setTitle("Next", for: .normal)
+            gridView.mixtapeButton.tintColor = .white
+            gridView.batchExportButton.tintColor = .white
             Config.Grid.videoLimit = Config.Grid.videoDefaultLimit
             if cart.videos.count > 1{
                 cart.videos = []
-                
                 refreshView()
                 configureFrameViews()
             }
             EventHub.shared.batchOff?()
         case .mixtape:
-            gridView.videoBatchButton.setTitleColor(.white, for: .normal)
-            gridView.closeButton.setTitleColor(.orange, for: .normal)
+            gridView.doneButton.setTitle("Make Mixtape", for: .normal)
+            gridView.batchExportButton.tintColor = .white
+            gridView.mixtapeButton.tintColor = .orange
             Config.Grid.videoLimit = Config.Grid.videoMixtapeLimit
             EventHub.shared.batchOff?()
         case .batch:
-            gridView.videoBatchButton.setTitleColor(.orange, for: .normal)
-            gridView.closeButton.setTitleColor(.white, for: .normal)
+            gridView.doneButton.setTitle("Batch Export", for: .normal)
+            gridView.mixtapeButton.tintColor = .white
+            gridView.batchExportButton.tintColor = .orange
             Config.Grid.videoLimit = Config.Grid.videoMixtapeLimit
             EventHub.shared.batchOn?()
         }
-        videoSelectState = newState
+    }
+    
+    func updateStateUI(state:GallerySelectState){
         
     }
     
+    
     @objc func videoBatchTouched(_ button:UIButton) {
-        updateVideoSelected(state: .batch)
+        videoSelectState = videoSelectState == .batch ? .single : .batch
+        
+        updateVideoSelected(state: videoSelectState)
     }
     
+    @objc func mixtapeButtonTouched(_ button:UIButton) {
+        videoSelectState = videoSelectState == .mixtape ? .single : .mixtape
+        
+        updateVideoSelected(state: videoSelectState)
+    }
     
     @objc func closeButtonTouched(_ button: UIButton) {
         updateVideoSelected(state: .mixtape)
@@ -222,10 +236,12 @@ extension VideosController: PageAware {
     
     func reloadContent() {
         refreshSelectedAlbum()
-        
     }
+    
     func pageDidShow() {
-        gridView.videoBatchButton.isHidden = Config.Grid.VideoBatch.hideButton
+        gridView.batchExportButton.isHidden = false //Config.Grid.VideoBatch.hideButton
+        updateVideoSelected(state: videoSelectState)
+    
         once.run {
             library.reload {
                 self.gridView.loadingIndicator.stopAnimating()
